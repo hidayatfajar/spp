@@ -193,31 +193,6 @@ export default class TambahSiswa extends Component {
                 </div>
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  name="password"
-                  id="password"
-                  type="password"
-                  value={this.state.password}
-                  placeholder="Password"
-                  noValidate
-                  onChange={this.handleChange}
-                />
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "password",
-                    this.state.password,
-                    `required`,
-                    { className: "text-danger" }
-                  )}
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-3">
                 <Form.Label>Jenis Kelamin</Form.Label>
                 <FormSelect name="gender" onChange={this.handleChange}>
                   <option>=== Pilih Jenis Kelamin ===</option>

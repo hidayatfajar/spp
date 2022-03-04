@@ -69,7 +69,7 @@ export default class Pembayaran extends Component {
 
   Cari = () => {
     const id = this.state.nis;
-    axios.get(`http://localhost:8000/siswa/${id}`).then((res) => {
+    axios.get(`http://localhost:8000/siswa_nis/${id}`).then((res) => {
       console.log(this.state.data)
       this.setState({
         nis_siswa: res.data[0].siswa_nis,
@@ -167,9 +167,7 @@ export default class Pembayaran extends Component {
                         placeholder="NIS Siswa"
                         name="nis"
                         id="nis"
-                        type="text"
                         value={this.state.nis}
-                        placeholder="Nama Jurusan"
                         noValidate
                         onChange={this.handleChange}
                       />
