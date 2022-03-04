@@ -10,14 +10,17 @@ import {
 } from "react-bootstrap";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
-import Swal from "sweetalert2";
-import Breadcrumb from "react-bootstrap/Breadcrumb";
+import Swal from 'sweetalert2'
+import Breadcrumb from 'react-bootstrap/Breadcrumb'
+
 
 export default class UbahSiswa extends Component {
   constructor(props) {
     super(props);
 
     this.validator = new SimpleReactValidator({ autoForceUpdate: this });
+
+    console.log(this.props.match.params.id);
 
     this.state = {
       id: this.props.match.params.id,
@@ -29,16 +32,12 @@ export default class UbahSiswa extends Component {
       jurusan: [],
       d_kelas: [],
       dataError: "",
-      errorMessage: "",
       selected_kelas: "",
       selected_jurusan: "",
       selected_d_kelas: "",
     };
   }
   handleChange = (e) => {
-    if (this.validator.fieldValid(this.state.selected_kelas)) {
-      this.validator.hideMessageFor(this.state.selected_kelas);
-    }
     e.preventDefault();
     this.setState({
       [e.target.name]: e.target.value,
@@ -53,7 +52,9 @@ export default class UbahSiswa extends Component {
           kelas: res.data,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
   getJurusan = () => {
     axios
@@ -63,7 +64,9 @@ export default class UbahSiswa extends Component {
           jurusan: res.data,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
   getDKelas = () => {
     axios
@@ -73,22 +76,32 @@ export default class UbahSiswa extends Component {
           d_kelas: res.data,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   };
   getData() {
     const siswa_id = this.state.id;
     axios
       .get(`http://localhost:8000/siswa/${siswa_id}`)
       .then((res) => {
+        console.log(res);
+        console.log(res.data[0]);
+        
         this.setState({
           siswa_id: res.data[0].siswa_id,
           nis: res.data[0].siswa_nis,
           nama: res.data[0].siswa_nama,
           password: res.data[0].siswa_password,
-          gender: res.data[0].siswa_gender,
+          // gender: res.data[0].siswa_gender,
+          // selected_kelas: res.data[0].kelas_nama,
+          // selected_jurusan: res.data[0].jurusan_nama,
+          // selected_d_kelas: res.data[0].d_kelas_nama,
         });
       })
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   }
   componentDidMount() {
     this.getKelas();
@@ -104,56 +117,48 @@ export default class UbahSiswa extends Component {
       nama: this.state.nama,
       password: this.state.password,
       gender: this.state.gender,
-
       kelas: this.state.selected_kelas,
       jurusan: this.state.selected_jurusan,
-      d_kelas: this.state.selected_d_kelas,
+      d_kelas: this.state.selected_d_kelas
     };
-
+    console.log(this.state.selected_kelas);
     const siswa_id = this.state.siswa_id;
     e.preventDefault();
     if (this.validator.allValid()) {
       axios
         .put(`http://localhost:8000/ubah/siswa/${siswa_id}`, data)
         .then((res) => {
+          console.log(res.data.message);
           this.setState({
             dataError: res.data.message,
           });
           this.validator.hideMessages();
-
+          console.log(this.state.kelas);
           if (this.state.dataError) {
             Swal.fire({
-              icon: "error",
-              title: "Oops...",
+              icon: 'error',
+              title: 'Oops...',
               text: `${this.state.dataError}`,
-            });
+            })
             this.setState({
-              nis: "",
-              nama: "",
-              password: "",
-              gender: "",
-              kelas: "",
-              jurusan: "",
-              d_kelas: "",
-              dataError: "",
-              errorMessage: "",
-              selected_kelas: "",
-              selected_jurusan: "",
-              selected_d_kelas: "",
+              
             });
           } else {
-            Swal.fire("Good job!", "You clicked the button!", "success");
+            Swal.fire(
+              'Good job!',
+              'You clicked the button!',
+              'success'
+            )
             this.props.history.push("/admin/siswa");
           }
+          console.log(res.data);
+          console.log(res.data);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
-      // check if kelas field validation is valid then show message for kelas field
-      if (this.validator.fieldValid(this.state.selected_kelas)) {
-        this.validator.showMessageFor(this.state.selected_kelas);
-      }
-
-      // this.validator.showMessageFor("kelas");
+      this.validator.showMessages();
       // rerender to show messages for the first time
       // you can use the autoForceUpdate option to do this automatically`
       this.forceUpdate();
@@ -163,226 +168,143 @@ export default class UbahSiswa extends Component {
     return (
       <div>
         <Card>
-          <Card.Body>
-            <Breadcrumb
-              style={{
-                marginTop: "-10px",
-                marginBottom: "-22px",
-              }}
-            >
-              <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
-              <Breadcrumb.Item href="/admin/siswa/">Data</Breadcrumb.Item>
-              <Breadcrumb.Item active>Edit</Breadcrumb.Item>
-            </Breadcrumb>
-          </Card.Body>
-        </Card>
-        <br></br>
-        <Card style={{ color: "black" }}>
-          <Card.Body>
-            {/* <Sidebar /> */}
-            <Form onSubmit={this.Submit}>
-              <Form.Group className="mb-3">
-                <Form.Label>NIS</Form.Label>
-                <Form.Control
-                  name="nis"
-                  id="nis"
-                  type="text"
-                  value={this.state.nis}
-                  placeholder="NIS"
-                  noValidate
-                  onChange={this.handleChange}
-                />
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message("nis", this.state.nis, `required`, {
-                    className: "text-danger",
-                  })}
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Nama Siswa</Form.Label>
-                <Form.Control
-                  name="nama"
-                  id="nama"
-                  type="text"
-                  value={this.state.nama}
-                  placeholder="Nama Siswa"
-                  noValidate
-                  onChange={this.handleChange}
-                />
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "nama",
-                    this.state.nama,
-                    `required|min:4`,
-                    {
-                      className: "text-danger",
-                    }
-                  )}
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  name="password"
-                  id="password"
-                  type="password"
-                  value={this.state.password}
-                  placeholder="Password"
-                  noValidate
-                  onChange={this.handleChange}
-                />
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "password",
-                    this.state.password,
-                    `required`,
-                    { className: "text-danger" }
-                  )}
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Jenis Kelamin</Form.Label>
-                <FormSelect name="gender" onChange={this.handleChange}>
-                  <option>=== Pilih Jenis Kelamin ===</option>
-                  <option value="L">Laki-Laki</option>
-                  <option value="P">Perempuan</option>
-                </FormSelect>
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "gender",
-                    this.state.gender,
-                    `required`,
-                    {
-                      className: "text-danger",
-                    }
-                  )}
-                </div>
-              </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Kelas</Form.Label>
-                <FormSelect name="selected_kelas" onChange={this.handleChange}>
-                  <option>=== Pilih Kelas ===</option>
-                  {this.state.kelas.map((kelas) => {
-                    return (
-                      <option key={kelas.kelas_id} value={kelas.kelas_id} on>
-                        {kelas.kelas_nama}
-                      </option>
-                    );
-                  })}
-                </FormSelect>
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "Kelas",
-                    this.state.selected_kelas_nama,
-                    `required`,
-                    {
-                      className: "text-danger",
-                    }
-                  )}
-                </div>
-              </Form.Group>
+<Card.Body>
+  <Breadcrumb style={{
+      marginTop: "-10px",
+      marginBottom: "-22px"
+      
+    }}>
+  <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
+  <Breadcrumb.Item href="/admin/siswa/">Data</Breadcrumb.Item>
+  <Breadcrumb.Item active>Edit</Breadcrumb.Item>
+  </Breadcrumb>
+  </Card.Body>
+</Card>
+<br></br>
+      <Card style={{ color: 'black'}}>
+        <Card.Body>
+        {/* <Sidebar /> */}
+          <Form onSubmit={this.Submit}>
+            <Form.Group className="mb-3">
+              <Form.Label>NIS</Form.Label>
+              <Form.Control
+                name="nis"
+                id="nis"
+                type="text"
+                value={this.state.nis}
+                placeholder="NIS"
+                noValidate
+                onChange={this.handleChange}
+              />
+              <div>
+                {this.validator.message("nis", this.state.nis, `required`, {
+                  className: "text-danger",
+                })}
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Nama Siswa</Form.Label>
+              <Form.Control
+                name="nama"
+                id="nama"
+                type="text"
+                value={this.state.nama}
+                placeholder="Nama Siswa"
+                noValidate
+                onChange={this.handleChange}
+              />
+              <div>
+                {this.validator.message("nama", this.state.nama, `required`, {
+                  className: "text-danger",
+                })}
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                name="password"
+                id="password"
+                type="password"
+                value={this.state.password}
+                placeholder="Password"
+                noValidate
+                onChange={this.handleChange}
+                readOnly
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Jenis Kelamin</Form.Label>
+              <FormSelect name="gender" onChange={this.handleChange}>
+                <option>=== Pilih Jenis Kelamin ===</option>
+                <option value="L">Laki-Laki</option>
+                <option value="P">Perempuan</option>
+              </FormSelect>
+              <div>
+                {this.validator.message("gender", this.state.gender, `required`, {
+                  className: "text-danger",
+                })}
+              </div>
+            </Form.Group>
 
-              <Form.Group className="mb-3">
-                <Form.Label>Jurusan</Form.Label>
-                <FormSelect
-                  name="selected_jurusan"
-                  onChange={this.handleChange}
-                >
-                  <option>=== Pilih Jurusan ===</option>
-                  {this.state.jurusan.map((jurusan) => {
-                    return (
-                      <option
-                        key={jurusan.jurusan_id}
-                        value={jurusan.jurusan_id}
-                      >
-                        {jurusan.jurusan_nama}
-                      </option>
-                    );
-                  })}
-                </FormSelect>
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "Jurusan",
-                    this.state.jurusan,
-                    `required`,
-                    {
-                      className: "text-danger",
-                    }
-                  )}
-                </div>
-              </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>Daftar Kelas</Form.Label>
-                <FormSelect
-                  name="selected_d_kelas"
-                  onChange={this.handleChange}
-                >
-                  <option>=== Pilih Daftar Kelas ===</option>
-                  {this.state.d_kelas.map((d_kelas) => {
-                    return (
-                      <option
-                        key={d_kelas.d_kelas_id}
-                        value={d_kelas.d_kelas_id}
-                      >
-                        {d_kelas.d_kelas_nama}
-                      </option>
-                    );
-                  })}
-                </FormSelect>
-                <div>
-                  {this.state.dataError ? (
-                    <div style={{ color: "red" }}>
-                      {this.state.errorMessage}
-                    </div>
-                  ) : null}
-                  {this.validator.message(
-                    "Daftar Kelas",
-                    this.state.d_kelas,
-                    `required`,
-                    {
-                      className: "text-danger",
-                    }
-                  )}
-                </div>
-              </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Kelas</Form.Label>
+              <FormSelect name='selected_kelas' onChange={this.handleChange}>
+              <option>=== Pilih Kelas ===</option>
+                {this.state.kelas.map((kelas) => {
+                  return (
+                    <option key={kelas.kelas_id} value={kelas.kelas_id}>{kelas.kelas_nama}</option>
+                  );
+                })}
+              </FormSelect>
+              <div>
+                {this.validator.message("Kelas", this.state.selected_kelas, `required`, {
+                  className: "text-danger",
+                })}
+              </div>
+            </Form.Group>
 
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
-            </Form>
-          </Card.Body>
-        </Card>
+            <Form.Group className="mb-3">
+              <Form.Label>Jurusan</Form.Label>
+              <FormSelect name='selected_jurusan' onChange={this.handleChange}>
+                <option>=== Pilih Jurusan ===</option>
+                {this.state.jurusan.map((jurusan) => {
+                  return (
+                    <option key={jurusan.jurusan_id} value={jurusan.jurusan_id}>{jurusan.jurusan_nama}</option>
+                  );
+                })}
+              </FormSelect>
+              <div>
+                {this.validator.message("Jurusan", this.state.selected_jurusan, `required`, {
+                  className: "text-danger",
+                })}
+              </div>
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Label>Daftar Kelas</Form.Label>
+              <FormSelect name='selected_d_kelas'onChange={this.handleChange}>
+                <option>=== Pilih Daftar Kelas ===</option>
+                {this.state.d_kelas.map((d_kelas) => {
+                  return (
+                    <option key={d_kelas.d_kelas_id} value={d_kelas.d_kelas_id}>
+                      {d_kelas.d_kelas_nama}
+                    </option>
+                  );
+                })}
+              </FormSelect>
+              <div>
+                {this.validator.message("Daftar Kelas", this.state.selected_d_kelas, `required`, {
+                  className: "text-danger",
+                })}
+              </div>
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </Card.Body>
+      </Card>
       </div>
     );
   }
