@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button, Row, Col, Form, Card } from "react-bootstrap";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { Link } from "react-router-dom";
 
 export default class TambahJurusan extends Component {
   constructor(props) {
@@ -49,10 +51,28 @@ export default class TambahJurusan extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/jurusan/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Add</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br></br>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Tambah Jurusan</Card.Title>
           <Form onSubmit={this.Submit}>
             <Form.Group className="mb-3">
-              <Form.Label>Nama Jurusan</Form.Label>
+            <hr />
+            <Form.Label>Nama Jurusan*</Form.Label>
               <Form.Control
                 name="jurusan_nama"
                 id="jurusan_nama"
@@ -74,13 +94,23 @@ export default class TambahJurusan extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Tambah
             </Button>
+            </Col>
+            <Col>
+            <Link to="/admin/jurusan">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
+          </Card.Body>
+          </Card>
         </div>
-      </div>
     );
   }
 }

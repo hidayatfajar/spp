@@ -8,6 +8,7 @@ import {
   FormSelect,
   FormCheck,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
 import Swal from 'sweetalert2'
@@ -26,7 +27,6 @@ export default class UbahSiswa extends Component {
       id: this.props.match.params.id,
       nis: "",
       nama: "",
-      password: "",
       gender: "",
       kelas: [],
       jurusan: [],
@@ -92,7 +92,7 @@ export default class UbahSiswa extends Component {
           siswa_id: res.data[0].siswa_id,
           nis: res.data[0].siswa_nis,
           nama: res.data[0].siswa_nama,
-          password: res.data[0].siswa_password,
+          // password: res.data[0].siswa_password,
           // gender: res.data[0].siswa_gender,
           // selected_kelas: res.data[0].kelas_nama,
           // selected_jurusan: res.data[0].jurusan_nama,
@@ -115,7 +115,6 @@ export default class UbahSiswa extends Component {
     const data = {
       nis: this.state.nis,
       nama: this.state.nama,
-      password: this.state.password,
       gender: this.state.gender,
       kelas: this.state.selected_kelas,
       jurusan: this.state.selected_jurusan,
@@ -170,24 +169,25 @@ export default class UbahSiswa extends Component {
         <Card>
 
 <Card.Body>
-  <Breadcrumb style={{
-      marginTop: "-10px",
-      marginBottom: "-22px"
-      
-    }}>
-  <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
-  <Breadcrumb.Item href="/admin/siswa/">Data</Breadcrumb.Item>
-  <Breadcrumb.Item active>Edit</Breadcrumb.Item>
-  </Breadcrumb>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}>
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/siswa/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Add</Breadcrumb.Item>
+            </Breadcrumb>
   </Card.Body>
 </Card>
 <br></br>
       <Card style={{ color: 'black'}}>
         <Card.Body>
-        {/* <Sidebar /> */}
+          <Card.Title>Ubah Siswa</Card.Title>
+          <hr/>
           <Form onSubmit={this.Submit}>
             <Form.Group className="mb-3">
-              <Form.Label>NIS</Form.Label>
+              <Form.Label>NIS*</Form.Label>
               <Form.Control
                 name="nis"
                 id="nis"
@@ -204,7 +204,7 @@ export default class UbahSiswa extends Component {
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Nama Siswa</Form.Label>
+              <Form.Label>Nama Siswa*</Form.Label>
               <Form.Control
                 name="nama"
                 id="nama"
@@ -221,20 +221,7 @@ export default class UbahSiswa extends Component {
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                name="password"
-                id="password"
-                type="password"
-                value={this.state.password}
-                placeholder="Password"
-                noValidate
-                onChange={this.handleChange}
-                readOnly
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Jenis Kelamin</Form.Label>
+              <Form.Label>Jenis Kelamin*</Form.Label>
               <FormSelect name="gender" onChange={this.handleChange}>
                 <option>=== Pilih Jenis Kelamin ===</option>
                 <option value="L">Laki-Laki</option>
@@ -248,7 +235,7 @@ export default class UbahSiswa extends Component {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Kelas</Form.Label>
+              <Form.Label>Kelas*</Form.Label>
               <FormSelect name='selected_kelas' onChange={this.handleChange}>
               <option>=== Pilih Kelas ===</option>
                 {this.state.kelas.map((kelas) => {
@@ -265,7 +252,7 @@ export default class UbahSiswa extends Component {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Jurusan</Form.Label>
+              <Form.Label>Jurusan*</Form.Label>
               <FormSelect name='selected_jurusan' onChange={this.handleChange}>
                 <option>=== Pilih Jurusan ===</option>
                 {this.state.jurusan.map((jurusan) => {
@@ -281,7 +268,7 @@ export default class UbahSiswa extends Component {
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Daftar Kelas</Form.Label>
+              <Form.Label>Daftar Kelas*</Form.Label>
               <FormSelect name='selected_d_kelas'onChange={this.handleChange}>
                 <option>=== Pilih Daftar Kelas ===</option>
                 {this.state.d_kelas.map((d_kelas) => {
@@ -298,10 +285,19 @@ export default class UbahSiswa extends Component {
                 })}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Ubah
             </Button>
+            </Col>
+            <Col md={3}>
+            <Link to="/admin/siswa">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
         </Card.Body>
       </Card>

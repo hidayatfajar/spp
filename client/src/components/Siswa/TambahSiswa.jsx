@@ -8,6 +8,7 @@ import {
   FormSelect,
   FormCheck,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -21,7 +22,6 @@ export default class TambahSiswa extends Component {
     this.state = {
       nis: "",
       nama: "",
-      password: "",
       gender: "",
       kelas: [],
       jurusan: [],
@@ -81,7 +81,6 @@ export default class TambahSiswa extends Component {
     const data = {
       nis: this.state.nis,
       nama: this.state.nama,
-      password: this.state.password,
       gender: this.state.gender,
       kelas: this.state.selected_kelas,
       jurusan: this.state.selected_jurusan,
@@ -128,12 +127,12 @@ export default class TambahSiswa extends Component {
           <Card.Body>
             <Breadcrumb
               style={{
-                marginTop: "auto",
-                marginBottom: "-10px",
+                marginTop: "-10px",
+                marginBottom: "-22px",
               }}
             >
-              <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
-              <Breadcrumb.Item href="/admin/siswa/">Data</Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/siswa/">Data</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>Add</Breadcrumb.Item>
             </Breadcrumb>
           </Card.Body>
@@ -141,10 +140,12 @@ export default class TambahSiswa extends Component {
         <br></br>
         <Card style={{ color: "black" }}>
           <Card.Body>
+          <Card.Title>Tambah Siswa</Card.Title>
+          <hr/>
             {/* <Sidebar /> */}
             <Form onSubmit={this.Submit}>
               <Form.Group className="mb-3">
-                <Form.Label>NIS</Form.Label>
+                <Form.Label>NIS*</Form.Label>
                 <Form.Control
                   name="nis"
                   id="nis"
@@ -171,7 +172,7 @@ export default class TambahSiswa extends Component {
                 </div>
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Nama Siswa</Form.Label>
+                <Form.Label>Nama Siswa*</Form.Label>
                 <Form.Control
                   name="nama"
                   id="nama"
@@ -193,7 +194,7 @@ export default class TambahSiswa extends Component {
                 </div>
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Jenis Kelamin</Form.Label>
+                <Form.Label>Jenis Kelamin*</Form.Label>
                 <FormSelect name="gender" onChange={this.handleChange}>
                   <option>=== Pilih Jenis Kelamin ===</option>
                   <option value="L">Laki-Laki</option>
@@ -217,7 +218,7 @@ export default class TambahSiswa extends Component {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Kelas</Form.Label>
+                <Form.Label>Kelas*</Form.Label>
                 <FormSelect name="selected_kelas" onChange={this.handleChange}>
                   <option>=== Pilih Kelas ===</option>
                   {this.state.kelas.map((kelas) => {
@@ -246,7 +247,7 @@ export default class TambahSiswa extends Component {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label>Jurusan</Form.Label>
+                <Form.Label>Jurusan*</Form.Label>
                 <FormSelect
                   name="selected_jurusan"
                   onChange={this.handleChange}
@@ -280,7 +281,7 @@ export default class TambahSiswa extends Component {
                 </div>
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label>Daftar Kelas</Form.Label>
+                <Form.Label>Daftar Kelas*</Form.Label>
                 <FormSelect
                   name="selected_d_kelas"
                   onChange={this.handleChange}
@@ -313,10 +314,19 @@ export default class TambahSiswa extends Component {
                   )}
                 </div>
               </Form.Group>
-
-              <Button variant="primary" type="submit">
-                Submit
-              </Button>
+              <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Tambah
+            </Button>
+            </Col>
+            <Col>
+            <Link to="/admin/siswa">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
             </Form>
           </Card.Body>
         </Card>

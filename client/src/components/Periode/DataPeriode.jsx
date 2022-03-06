@@ -2,10 +2,9 @@ import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Row, Container, Col, Button, Card } from "react-bootstrap";
+import { Row, Container, Col, Button, Card, Breadcrumb } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import Sidebar from "../../components/Sidebar/SideBar";
+import { faEye, faTrashAlt, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 
 export default class Data extends Component {
   constructor(props) {
@@ -64,14 +63,14 @@ export default class Data extends Component {
                 <Row>
                   <Col md={2}>
                     <Link to={`/admin/periode/ubah/${row.periode_id}`}>
-                      <Button variant="warning" className="mr-2" block>
-                        <FontAwesomeIcon icon={faEye} />
+                      <Button variant="outline-warning" className="mr-2" block>
+                        <FontAwesomeIcon icon={faUserEdit} />
                       </Button>
                     </Link>
                   </Col>
                   <Col>
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       onClick={() => this.handleRemove(row.periode_id)}
                     >
                       <FontAwesomeIcon icon={faTrashAlt} />
@@ -88,12 +87,26 @@ export default class Data extends Component {
       <div>
         <Card>
           <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin/">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Data</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+              <br/>
+        <Card>
+          <Card.Body>
             <Link to={"/admin/periode/tambah"}>
               <Button className="mr-2" variant="outline-primary" block="">
-                Create
+                Tambah
               </Button>
             </Link>
-
+            <hr/>
             <BootstrapTable
               keyField="id"
               data={data}

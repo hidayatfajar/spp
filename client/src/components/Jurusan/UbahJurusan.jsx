@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Card, Form, Col, Button, Row } from "react-bootstrap";
+import { Card, Form, Col, Button, Row, Container } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
+import { faLongArrowAltLeft, faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import SimpleReactValidator from "simple-react-validator";
+import { Breadcrumb } from "react-bootstrap";
 
 export default class UbahJurusan extends Component {
   constructor(props) {
@@ -71,10 +72,29 @@ export default class UbahJurusan extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/jurusan/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Edit</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br></br>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Form.Group className="mb-3">
+            <Card.Title> Ubah Jurusan</Card.Title>
+            <hr />
           <Form onSubmit={this.editData}>
             <Form.Group className="mb-3">
-              <Form.Label>Id jurusan</Form.Label>
+              <Form.Label>Id jurusan*</Form.Label>
               <Form.Control
                 name="jurusan_id"
                 id="jurusan_id"
@@ -87,7 +107,7 @@ export default class UbahJurusan extends Component {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Nama Jurusan</Form.Label>
+              <Form.Label>Nama Jurusan*</Form.Label>
               <Form.Control
                 name="jurusan_nama"
                 id="jurusan_nama"
@@ -109,13 +129,24 @@ export default class UbahJurusan extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Ubah
             </Button>
+            </Col>
+            <Col md={3}>
+            <Link to="/admin/jurusan">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
+          </Form.Group>
+          </Card.Body>
+          </Card>
         </div>
-      </div>
     );
   }
 }

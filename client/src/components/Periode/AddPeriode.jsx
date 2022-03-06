@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Form, Card } from "react-bootstrap";
+import { Button, Row, Col, Form, Card, Breadcrumb } from "react-bootstrap";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default class AddPeriode extends Component {
   constructor(props) {
@@ -51,10 +52,28 @@ export default class AddPeriode extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/periode/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Add</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br/>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Tambah Periode</Card.Title>
+            <hr/>
           <Form onSubmit={this.Submit}>
             <Form.Group className="mb-3">
-              <Form.Label>Periode Mulai</Form.Label>
+              <Form.Label>Periode Mulai*</Form.Label>
               <Form.Control
                 name="periode_mulai"
                 id="periode_mulai"
@@ -66,9 +85,6 @@ export default class AddPeriode extends Component {
                 onChange={this.handleChange}
               />
               <div>
-                {this.state.dataError ? (
-                  <div style={{ color: "red" }}>{this.state.errorMessage}</div>
-                ) : null}
                 {this.validator.message(
                   "periode_mulai",
                   this.state.periode_mulai,
@@ -78,7 +94,7 @@ export default class AddPeriode extends Component {
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Periode Akhir</Form.Label>
+              <Form.Label>Periode Akhir*</Form.Label>
               <Form.Control
                 name="periode_akhir"
                 id="periode_akhir"
@@ -90,9 +106,6 @@ export default class AddPeriode extends Component {
                 onChange={this.handleChange}
               />
               <div>
-                {this.state.dataError ? (
-                  <div style={{ color: "red" }}>{this.state.errorMessage}</div>
-                ) : null}
                 {this.validator.message(
                   "periode_akhir",
                   this.state.periode_akhir,
@@ -101,13 +114,23 @@ export default class AddPeriode extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Tambah
             </Button>
+            </Col>
+            <Col>
+            <Link to="/admin/periode">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
+          </Card.Body>
+          </Card>
         </div>
-      </div>
     );
   }
 }

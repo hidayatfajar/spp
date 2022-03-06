@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Form, Col, Button, Row } from "react-bootstrap";
+import { Card, Form, Col, Button, Row, Breadcrumb } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -75,9 +75,27 @@ export default class Editperiode extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/kelas/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Edit</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br></br>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Ubah Periode</Card.Title>
           <Form onSubmit={this.editData}>
             <Form.Group className="mb-3">
+            <hr />
               <Form.Label>Periode ID</Form.Label>
               <Form.Control
                 name="periode_id"
@@ -101,9 +119,6 @@ export default class Editperiode extends Component {
                 onChange={this.handleChange}
               />
               <div>
-                {this.state.dataError ? (
-                  <div style={{ color: "red" }}>{this.state.errorMessage}</div>
-                ) : null}
                 {this.validator.message(
                   "Periode Mulai",
                   this.state.periode_mulai,
@@ -124,9 +139,6 @@ export default class Editperiode extends Component {
                 onChange={this.handleChange}
               />
               <div>
-                {this.state.dataError ? (
-                  <div style={{ color: "red" }}>{this.state.errorMessage}</div>
-                ) : null}
                 {this.validator.message(
                   "Periode Akhir",
                   this.state.periode_akhir,
@@ -135,13 +147,23 @@ export default class Editperiode extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Ubah
             </Button>
+            </Col>
+            <Col md={3}>
+            <Link to="/admin/periode">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
+          </Card.Body>
+          </Card>
         </div>
-      </div>
     );
   }
 }

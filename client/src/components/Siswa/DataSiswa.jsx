@@ -2,10 +2,12 @@ import React, { Component } from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Row, Container, Col, Button, Card } from "react-bootstrap";
+import { Row, Container, Col, Button, Card, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faTrashAlt, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import paginationFactory from 'react-bootstrap-table2-paginator';
+
 
 export default class DataSiswa extends Component {
   constructor(props) {
@@ -32,26 +34,40 @@ export default class DataSiswa extends Component {
     this.getSiswa();
   };
 
-  //   getAdmin = () => {
-  //       axios.get('http://localhost:8000/jurusan/')
-  //       .then((response) => response.json())
-  //       .then((json) => {
-  //
-  //           this.setState({
-  //               data : json
-  //           })
-  //       })
-  //   }
-
+  
   componentDidMount() {
     this.getSiswa();
   }
   render() {
-    // const { SearchBar } = Search;
+    
     const data = this.state.data;
     const selectRow = {
       mode: "radio",
       clickToSelect: true,
+    };
+    const options = {
+      paginationSize: 4,
+      pageStartIndex: 1,
+      // alwaysShowAllBtns: true, // Always show next and previous button
+      // withFirstAndLast: false, // Hide the going to First and Last page button
+      // hideSizePerPage: true, // Hide the sizePerPage dropdown always
+      // hidePageListOnlyOnePage: true, // Hide the pagination list when only one page
+      firstPageText: 'First',
+      prePageText: 'Back',
+      nextPageText: 'Next',
+      lastPageText: 'Last',
+      nextPageTitle: 'First page',
+      prePageTitle: 'Pre page',
+      firstPageTitle: 'Next page',
+      lastPageTitle: 'Last page',
+      disablePageTitle: true,
+      sizePerPageList: [{
+        text: '5', value: 5
+      }, {
+        text: '10', value: 10
+      }, {
+        text: 'All', value: data.length
+      }] // A numeric array is also available. the purpose of above example is custom the text
     };
     const columns = [
       {
@@ -95,16 +111,16 @@ export default class DataSiswa extends Component {
               {/* <Sidebar /> */}
               <Container>
                 <Row>
-                  <Col md={4}>
+                  <Col md={3}>
                     <Link to={`/admin/siswa/ubah/${row.siswa_id}`}>
-                      <Button variant="warning" className="mr-2" block>
-                        <FontAwesomeIcon icon={faEye} />
+                      <Button variant="outline-warning" className="mr-2" block>
+                        <FontAwesomeIcon icon={faUserEdit} />
                       </Button>
                     </Link>
                   </Col>
                   <Col md={1}>
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       onClick={() => this.handleRemove(row.siswa_id)}
                     >
                       <FontAwesomeIcon icon={faTrashAlt} />
@@ -129,21 +145,22 @@ export default class DataSiswa extends Component {
           <Card.Body>
             <Breadcrumb
               style={{
-                marginTop: "auto",
-                marginBottom: "-10px",
+                marginTop: "-10px",
+                marginBottom: "-22px",
               }}
             >
-              <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/">Home</Link></Breadcrumb.Item>
               <Breadcrumb.Item active>Data</Breadcrumb.Item>
             </Breadcrumb>
           </Card.Body>
         </Card>
         <br></br>
+              <br/>
         <Card>
           <Card.Body>
             <Link to={"/admin/siswa/tambah/"}>
               <Button className="mr-2" variant="outline-primary" block="">
-                Create
+                Tambah
               </Button>
             </Link>
             <hr />
@@ -156,6 +173,7 @@ export default class DataSiswa extends Component {
               hover
               condensed
               bordered={false}
+              pagination={ paginationFactory(options) }
               // selectRow={ selectRow }
             />
           </Card.Body>

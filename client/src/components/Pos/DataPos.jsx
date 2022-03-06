@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Row, Container, Col, Button, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faEye, faTrashAlt, faUserEdit } from "@fortawesome/free-solid-svg-icons";
 import Breadcrumb from 'react-bootstrap/Breadcrumb'
 
 
@@ -53,7 +53,7 @@ export default class DataPos extends Component {
       },
       {
         dataField: "pos_nama",
-        text: "Nama pos",
+        text: "Nama Pos",
       },
       {
         dataField: "pos_deskripsi",
@@ -69,16 +69,16 @@ export default class DataPos extends Component {
               
               <Container>
                 <Row>
-                  <Col md={2}>
+                  <Col md={3}>
                     <Link to={`/admin/pos/ubah/${row.pos_id}`} >
-                      <Button variant="warning" className="mr-2" block >
-                        <FontAwesomeIcon icon={faEdit} />
+                      <Button variant="outline-warning" className="mr-2" block >
+                        <FontAwesomeIcon icon={faUserEdit} />
                       </Button>
                     </Link>
                   </Col>
                   <Col >
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       onClick={() => this.handleRemove(row.pos_id)}
                     >
                       <FontAwesomeIcon icon={faTrashAlt} />
@@ -94,25 +94,27 @@ export default class DataPos extends Component {
     return (
       <div>
       <Card>
-      <Card.Body>
-        <Breadcrumb style={{
-            marginTop: "auto",
-            marginBottom: "-10px"
-            }}>
-        <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
-        <Breadcrumb.Item active>Data</Breadcrumb.Item>
-        </Breadcrumb>
-        </Card.Body>
-      </Card>
-      <br></br>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin/">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Data</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+              <br/>
         <Card>
           <Card.Body>
             <Link to={"/admin/pos/tambah"}>
               <Button className="mr-2" variant="outline-primary" block="">
-                Create
+                Tambah
               </Button>
             </Link>
-
+            <hr/>
             <BootstrapTable
               keyField="id"
               data={data}

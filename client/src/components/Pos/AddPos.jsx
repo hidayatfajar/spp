@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Form, Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { Button, Row, Col, Form, Card, Breadcrumb, } from "react-bootstrap";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
 
-export default class Tambahpos extends Component {
+export default class AddPos extends Component {
   constructor(props) {
     super(props);
     this.validator = new SimpleReactValidator();
@@ -51,10 +52,28 @@ export default class Tambahpos extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/pos/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Add</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br/>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Tambah Pos</Card.Title>
+            <hr/>
           <Form onSubmit={this.Submit}>
             <Form.Group className="mb-3">
-              <Form.Label>Nama pos</Form.Label>
+              <Form.Label>Nama Pos*</Form.Label>
               <Form.Control
                 name="pos_nama"
                 id="pos_nama"
@@ -78,13 +97,13 @@ export default class Tambahpos extends Component {
             </Form.Group>
 
             <Form.Group className="mb-3">
-              <Form.Label>Pos Deskripsi</Form.Label>
+              <Form.Label>Pos Deskripsi*</Form.Label>
               <Form.Control
                 name="pos_deskripsi"
                 id="pos_deskripsi"
                 type="text"
                 value={this.state.pos_deskripsi}
-                placeholder="Nama pos"
+                placeholder="Pos Deskripsi"
                 noValidate
                 onChange={this.handleChange}
               />
@@ -100,13 +119,23 @@ export default class Tambahpos extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Tambah
             </Button>
+            </Col>
+            <Col>
+            <Link to="/admin/pos">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
+          </Card.Body>
+          </Card>
         </div>
-      </div>
     );
   }
 }

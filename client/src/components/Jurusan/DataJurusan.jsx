@@ -4,8 +4,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Row, Container, Col, Button, Card } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import Sidebar from "../../components/Sidebar/SideBar";
+import { faEdit, faEye, faTrashAlt, faUser, faUserEdit } from "@fortawesome/free-solid-svg-icons";
+import { Breadcrumb } from "react-bootstrap";
 
 export default class Data extends Component {
   constructor(props) {
@@ -61,14 +61,14 @@ export default class Data extends Component {
                 <Row>
                   <Col md={2}>
                     <Link to={`/admin/jurusan/ubah/${row.jurusan_id}`}>
-                      <Button variant="warning" className="mr-2" block>
-                        <FontAwesomeIcon icon={faEye} />
+                      <Button variant="outline-warning" className="mr-2" block>
+                        <FontAwesomeIcon icon={faUserEdit} />
                       </Button>
                     </Link>
                   </Col>
                   <Col>
                     <Button
-                      variant="danger"
+                      variant="outline-danger"
                       onClick={() => this.handleRemove(row.jurusan_id)}
                     >
                       <FontAwesomeIcon icon={faTrashAlt} />
@@ -85,12 +85,26 @@ export default class Data extends Component {
       <div>
         <Card>
           <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item href="/admin/">Home</Breadcrumb.Item>
+              <Breadcrumb.Item active>Data</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br></br>
+        <Card>
+          <Card.Body>
             <Link to={"/admin/jurusan/tambah"}>
               <Button className="mr-2" variant="outline-primary" block="">
-                Create
+                Tambah
               </Button>
             </Link>
-
+              <hr/>
             <BootstrapTable
               keyField="id"
               data={data}

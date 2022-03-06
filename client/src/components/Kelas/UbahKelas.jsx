@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Form, Col, Button, Row } from "react-bootstrap";
+import { Card, Form, Col, Button, Row, Breadcrumb } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -71,36 +71,51 @@ export default class UbahKelas extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/kelas/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Edit</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br></br>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Ubah Kelas</Card.Title>
           <Form onSubmit={this.editData}>
             <Form.Group className="mb-3">
-              <Form.Label>Id kelas</Form.Label>
+            <hr />
+              <Form.Label>ID Kelas*</Form.Label>
               <Form.Control
                 name="kelas_id"
                 id="kelas_id"
                 type="text"
                 value={this.state.kelas_id}
-                placeholder="Id kelas"
+                placeholder="ID Kelas"
                 noValidate
                 onChange={this.handleChange}
                 readOnly
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Nama kelas</Form.Label>
+              <Form.Label>Nama Kelas*</Form.Label>
               <Form.Control
                 name="kelas_nama"
                 id="kelas_nama"
                 type="text"
                 value={this.state.kelas_nama}
-                placeholder="Nama kelas"
+                placeholder="Nama Kelas"
                 noValidate
                 onChange={this.handleChange}
               />
               <div>
-                {this.state.dataError ? (
-                  <div style={{ color: "red" }}>{this.state.errorMessage}</div>
-                ) : null}
                 {this.validator.message(
                   "Nama kelas",
                   this.state.kelas_nama,
@@ -109,12 +124,22 @@ export default class UbahKelas extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Ubah
             </Button>
+            </Col>
+            <Col md={3}>
+            <Link to="/admin/kelas">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
-        </div>
+          </Card.Body>
+          </Card>
       </div>
     );
   }

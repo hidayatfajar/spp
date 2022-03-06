@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Form, Col, Button, Row } from "react-bootstrap";
+import { Card, Form, Col, Button, Row, Breadcrumb } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { faLongArrowAltLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -75,10 +75,28 @@ export default class EditPos extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+         <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/pos/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Edit</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br></br>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Ubah Pos</Card.Title>
           <Form onSubmit={this.editData}>
             <Form.Group className="mb-3">
-              <Form.Label>Id pos</Form.Label>
+            <hr />
+              <Form.Label>ID Pos*</Form.Label>
               <Form.Control
                 name="pos_id"
                 id="pos_id"
@@ -91,13 +109,13 @@ export default class EditPos extends Component {
               />
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Nama pos</Form.Label>
+              <Form.Label>Nama Pos*</Form.Label>
               <Form.Control
                 name="pos_nama"
                 id="pos_nama"
                 type="text"
                 value={this.state.pos_nama}
-                placeholder="Nama pos"
+                placeholder="Nama Pos"
                 noValidate
                 onChange={this.handleChange}
               />
@@ -106,7 +124,7 @@ export default class EditPos extends Component {
                   <div style={{ color: "red" }}>{this.state.errorMessage}</div>
                 ) : null}
                 {this.validator.message(
-                  "Nama pos",
+                  "Nama Pos",
                   this.state.pos_nama,
                   `required`,
                   { className: "text-danger" }
@@ -114,7 +132,7 @@ export default class EditPos extends Component {
               </div>
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label>Pos Deskripsi</Form.Label>
+              <Form.Label>Pos Deskripsi*</Form.Label>
               <Form.Control
                 name="pos_deskripsi"
                 id="pos_deskripsi"
@@ -136,13 +154,23 @@ export default class EditPos extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Ubah
             </Button>
+            </Col>
+            <Col>
+            <Link to="/admin/pos">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
+          </Card.Body>
+          </Card>
         </div>
-      </div>
     );
   }
 }

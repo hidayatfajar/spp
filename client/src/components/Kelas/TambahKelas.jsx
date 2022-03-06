@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Button, Row, Col, Form, Card } from "react-bootstrap";
+import { Button, Row, Col, Form, Card, Breadcrumb } from "react-bootstrap";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 export default class Tambahkelas extends Component {
   constructor(props) {
@@ -49,23 +50,38 @@ export default class Tambahkelas extends Component {
   render() {
     return (
       <div>
-        <div className="container">
+        <Card>
+          <Card.Body>
+            <Breadcrumb
+              style={{
+                marginTop: "-10px",
+                marginBottom: "-22px",
+              }}
+            >
+              <Breadcrumb.Item><Link to="/admin">Home</Link></Breadcrumb.Item>
+              <Breadcrumb.Item><Link to="/admin/kelas/">Data</Link></Breadcrumb.Item>
+              <Breadcrumb.Item active>Add</Breadcrumb.Item>
+            </Breadcrumb>
+          </Card.Body>
+        </Card>
+        <br/>
+        <Card style={{ color: "black" }}>
+          <Card.Body>
+            <Card.Title>Tambah Kelas</Card.Title>
           <Form onSubmit={this.Submit}>
             <Form.Group className="mb-3">
-              <Form.Label>Nama kelas</Form.Label>
+            <hr />
+              <Form.Label>Nama Kelas*</Form.Label>
               <Form.Control
                 name="kelas_nama"
                 id="kelas_nama"
                 type="text"
                 value={this.state.kelas_nama}
-                placeholder="Nama kelas"
+                placeholder="Nama Kelas"
                 noValidate
                 onChange={this.handleChange}
               />
               <div>
-                {this.state.dataError ? (
-                  <div style={{ color: "red" }}>{this.state.errorMessage}</div>
-                ) : null}
                 {this.validator.message(
                   "kelas_nama",
                   this.state.kelas_nama,
@@ -74,12 +90,22 @@ export default class Tambahkelas extends Component {
                 )}
               </div>
             </Form.Group>
-
-            <Button variant="primary" type="submit">
-              Submit
+            <Row>
+            <Col md={1}>
+            <Button variant="outline-primary" type="submit">
+              Tambah
             </Button>
+            </Col>
+            <Col>
+            <Link to="/admin/kelas">
+              <Button variant="outline-danger" type="submit">Batal
+            </Button>
+            </Link>
+            </Col>
+            </Row>
           </Form>
-        </div>
+          </Card.Body>
+          </Card>
       </div>
     );
   }
